@@ -119,158 +119,160 @@
         
         <!-- Sidebar -->
         <div class="lg:col-span-1">
-            <!-- Order Summary -->
-            <div class="bg-white rounded-2xl shadow-sm border border-sophisticated-border sticky top-24">
-                <div class="p-6 border-b border-sophisticated-border">
-                    <h3 class="text-lg font-semibold text-sophisticated-dark">Resumo do Pedido</h3>
-                </div>
-                <div class="p-6 space-y-6">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sophisticated-muted">Subtotal</span>
-                            <span class="text-sophisticated-dark font-medium"><?= formatPrice($order['total_amount']) ?></span>
-                        </div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sophisticated-muted">Frete</span>
-                            <span class="text-green-600 font-medium">Grátis</span>
-                        </div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-sophisticated-muted">Taxas</span>
-                            <span class="text-sophisticated-dark font-medium">R$ 0,00</span>
-                        </div>
-                        <div class="border-t border-sophisticated-border pt-2">
-                            <div class="flex justify-between items-center">
-                                <span class="text-lg font-semibold text-sophisticated-dark">Total</span>
-                                <span class="text-2xl font-bold text-sophisticated-dark"><?= formatPrice($order['total_amount']) ?></span>
+            <div class="sticky top-24 space-y-6">
+                <!-- Order Summary -->
+                <div class="bg-white rounded-2xl shadow-sm border border-sophisticated-border">
+                    <div class="p-6 border-b border-sophisticated-border">
+                        <h3 class="text-lg font-semibold text-sophisticated-dark">Resumo do Pedido</h3>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sophisticated-muted">Subtotal</span>
+                                <span class="text-sophisticated-dark font-medium"><?= formatPrice($order['total_amount']) ?></span>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label class="text-sm font-medium text-sophisticated-muted">Forma de Pagamento</label>
-                        <p class="text-sophisticated-dark font-medium mt-1">
-                            <?php
-                            switch($order['payment_method']) {
-                                case 'boleto':
-                                    echo 'Boleto Bancário';
-                                    break;
-                                case 'pix':
-                                    echo 'Pix';
-                                    break;
-                                case 'cartao':
-                                    echo 'Cartão de Crédito';
-                                    break;
-                                default:
-                                    echo 'Não informado';
-                            }
-                            ?>
-                        </p>
-                    </div>
-                    
-                    <?php if ($order['payment_method'] === 'boleto'): ?>
-                        <button type="button" class="w-full py-3 px-4 border border-sophisticated-primary text-sophisticated-primary rounded-xl font-semibold hover:bg-sophisticated-primary hover:text-white transition-all duration-200" onclick="showBoletoModal()">
-                            <i class="fas fa-barcode mr-2"></i>Gerar Boleto
-                        </button>
-                    <?php elseif ($order['payment_method'] === 'pix'): ?>
-                        <button type="button" class="w-full py-3 px-4 border border-green-500 text-green-600 rounded-xl font-semibold hover:bg-green-500 hover:text-white transition-all duration-200" onclick="showPixModal()">
-                            <i class="fas fa-qrcode mr-2"></i>Ver QR Code Pix
-                        </button>
-                    <?php elseif ($order['payment_method'] === 'cartao'): ?>
-                        <div class="bg-green-50 border border-green-200 rounded-xl p-4">
-                            <div class="flex items-center">
-                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
-                                <div>
-                                    <h4 class="font-semibold text-green-800">Pagamento Aprovado!</h4>
-                                    <p class="text-sm text-green-700">Seu pagamento foi processado com sucesso.</p>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sophisticated-muted">Frete</span>
+                                <span class="text-green-600 font-medium">Grátis</span>
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sophisticated-muted">Taxas</span>
+                                <span class="text-sophisticated-dark font-medium">R$ 0,00</span>
+                            </div>
+                            <div class="border-t border-sophisticated-border pt-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold text-sophisticated-dark">Total</span>
+                                    <span class="text-2xl font-bold text-sophisticated-dark"><?= formatPrice($order['total_amount']) ?></span>
                                 </div>
                             </div>
                         </div>
-                    <?php endif; ?>
-                    
-                    <div class="pt-4">
-                        <a href="/orders" class="w-full py-3 px-4 border border-sophisticated-border text-sophisticated-text rounded-xl font-semibold hover:bg-sophisticated-gray transition-colors duration-200 text-center block">
-                            <i class="fas fa-arrow-left mr-2"></i>Voltar aos Pedidos
-                        </a>
+                        
+                        <div>
+                            <label class="text-sm font-medium text-sophisticated-muted">Forma de Pagamento</label>
+                            <p class="text-sophisticated-dark font-medium mt-1">
+                                <?php
+                                switch($order['payment_method']) {
+                                    case 'boleto':
+                                        echo 'Boleto Bancário';
+                                        break;
+                                    case 'pix':
+                                        echo 'Pix';
+                                        break;
+                                    case 'cartao':
+                                        echo 'Cartão de Crédito';
+                                        break;
+                                    default:
+                                        echo 'Não informado';
+                                }
+                                ?>
+                            </p>
+                        </div>
+                        
+                        <?php if ($order['payment_method'] === 'boleto'): ?>
+                            <button type="button" class="w-full py-3 px-4 border border-sophisticated-primary text-sophisticated-primary rounded-xl font-semibold hover:bg-sophisticated-primary hover:text-white transition-all duration-200" onclick="showBoletoModal()">
+                                <i class="fas fa-barcode mr-2"></i>Gerar Boleto
+                            </button>
+                        <?php elseif ($order['payment_method'] === 'pix'): ?>
+                            <button type="button" class="w-full py-3 px-4 border border-green-500 text-green-600 rounded-xl font-semibold hover:bg-green-500 hover:text-white transition-all duration-200" onclick="showPixModal()">
+                                <i class="fas fa-qrcode mr-2"></i>Ver QR Code Pix
+                            </button>
+                        <?php elseif ($order['payment_method'] === 'cartao'): ?>
+                            <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-green-800">Pagamento Aprovado!</h4>
+                                        <p class="text-sm text-green-700">Seu pagamento foi processado com sucesso.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="pt-4">
+                            <a href="/orders" class="w-full py-3 px-4 border border-sophisticated-border text-sophisticated-text rounded-xl font-semibold hover:bg-sophisticated-gray transition-colors duration-200 text-center block">
+                                <i class="fas fa-arrow-left mr-2"></i>Voltar aos Pedidos
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- Order Status Timeline -->
-            <div class="bg-white rounded-2xl shadow-sm border border-sophisticated-border mt-6">
-                <div class="p-6 border-b border-sophisticated-border">
-                    <h3 class="text-lg font-semibold text-sophisticated-dark">Status do Pedido</h3>
-                </div>
-                <div class="p-6">
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
+                
+                <!-- Order Status Timeline -->
+                <div class="bg-white rounded-2xl shadow-sm border border-sophisticated-border">
+                    <div class="p-6 border-b border-sophisticated-border">
+                        <h3 class="text-lg font-semibold text-sophisticated-dark">Status do Pedido</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sophisticated-dark font-medium">Pedido Realizado</p>
+                                    <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sophisticated-dark font-medium">Pedido Realizado</p>
-                                <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></p>
+                            
+                            <?php if ($order['status'] !== 'pending'): ?>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sophisticated-dark font-medium">Pagamento Confirmado</p>
+                                    <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'] . ' +1 hour')) ?></p>
+                                </div>
                             </div>
+                            <?php endif; ?>
+                            
+                            <?php if ($order['status'] === 'processing' || $order['status'] === 'shipped' || $order['status'] === 'completed'): ?>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sophisticated-dark font-medium">Em Preparação</p>
+                                    <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'] . ' +2 hours')) ?></p>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            
+                            <?php if ($order['status'] === 'shipped' || $order['status'] === 'completed'): ?>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sophisticated-dark font-medium">Enviado</p>
+                                    <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'] . ' +1 day')) ?></p>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            
+                            <?php if ($order['status'] === 'completed'): ?>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sophisticated-dark font-medium">Entregue</p>
+                                    <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'] . ' +3 days')) ?></p>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            
+                            <?php if ($order['status'] === 'pending'): ?>
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-sophisticated-light rounded-full flex items-center justify-center mr-4">
+                                    <i class="fas fa-clock text-sophisticated-muted text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sophisticated-muted font-medium">Aguardando Pagamento</p>
+                                    <p class="text-sophisticated-muted text-sm">Pendente</p>
+                                </div>
+                            </div>
+                            <?php endif; ?>
                         </div>
-                        
-                        <?php if ($order['status'] !== 'pending'): ?>
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sophisticated-dark font-medium">Pagamento Confirmado</p>
-                                <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'] . ' +1 hour')) ?></p>
-                            </div>
-                        </div>
-                        <?php endif; ?>
-                        
-                        <?php if ($order['status'] === 'processing' || $order['status'] === 'shipped' || $order['status'] === 'completed'): ?>
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sophisticated-dark font-medium">Em Preparação</p>
-                                <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'] . ' +2 hours')) ?></p>
-                            </div>
-                        </div>
-                        <?php endif; ?>
-                        
-                        <?php if ($order['status'] === 'shipped' || $order['status'] === 'completed'): ?>
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sophisticated-dark font-medium">Enviado</p>
-                                <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'] . ' +1 day')) ?></p>
-                            </div>
-                        </div>
-                        <?php endif; ?>
-                        
-                        <?php if ($order['status'] === 'completed'): ?>
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-check text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sophisticated-dark font-medium">Entregue</p>
-                                <p class="text-sophisticated-muted text-sm"><?= date('d/m/Y H:i', strtotime($order['created_at'] . ' +3 days')) ?></p>
-                            </div>
-                        </div>
-                        <?php endif; ?>
-                        
-                        <?php if ($order['status'] === 'pending'): ?>
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 bg-sophisticated-light rounded-full flex items-center justify-center mr-4">
-                                <i class="fas fa-clock text-sophisticated-muted text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-sophisticated-muted font-medium">Aguardando Pagamento</p>
-                                <p class="text-sophisticated-muted text-sm">Pendente</p>
-                            </div>
-                        </div>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
