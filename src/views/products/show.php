@@ -1,222 +1,242 @@
+<?php $pageTitle = $product['name']; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<div class="container mt-4">
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?php echo $_SESSION['success']; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        <?php unset($_SESSION['success']); ?>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?php echo $_SESSION['error']; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-        <?php unset($_SESSION['error']); ?>
-    <?php endif; ?>
-
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Início</a></li>
-            <li class="breadcrumb-item"><a href="/products">Produtos</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><?php echo htmlspecialchars($product['name']); ?></li>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Breadcrumb -->
+    <nav class="mb-8">
+        <ol class="flex items-center space-x-2 text-sm">
+            <li><a href="/" class="text-sophisticated-muted hover:text-sophisticated-primary transition-colors duration-200">Início</a></li>
+            <li><i class="fas fa-chevron-right text-sophisticated-muted"></i></li>
+            <li><a href="/products" class="text-sophisticated-muted hover:text-sophisticated-primary transition-colors duration-200">Produtos</a></li>
+            <li><i class="fas fa-chevron-right text-sophisticated-muted"></i></li>
+            <li><a href="/category/<?= $product['category_id'] ?>" class="text-sophisticated-muted hover:text-sophisticated-primary transition-colors duration-200"><?= e($product['category_name']) ?></a></li>
+            <li><i class="fas fa-chevron-right text-sophisticated-muted"></i></li>
+            <li class="text-sophisticated-dark font-medium"><?= e($product['name']) ?></li>
         </ol>
     </nav>
 
-    <div class="row">
-        <!-- Imagem do Produto -->
-        <div class="col-md-6">
-            <div class="product-image-container">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Product Images -->
+        <div class="space-y-6">
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-sophisticated-border">
                 <?php if ($product['image_url']): ?>
-                    <img src="<?php echo htmlspecialchars($product['image_url']); ?>" 
-                         alt="<?php echo htmlspecialchars($product['name']); ?>" 
-                         class="img-fluid product-image">
+                    <img src="<?= e($product['image_url']) ?>" 
+                         alt="<?= e($product['name']) ?>" 
+                         class="w-full h-96 object-cover">
                 <?php else: ?>
-                    <div class="no-image-placeholder">
-                        <i class="fas fa-image fa-3x text-muted"></i>
-                        <p class="text-muted">Sem imagem</p>
+                    <div class="w-full h-96 bg-gradient-to-br from-sophisticated-light to-sophisticated-border flex items-center justify-center">
+                        <i class="fas fa-image text-sophisticated-muted text-6xl"></i>
                     </div>
                 <?php endif; ?>
             </div>
-        </div>
-
-        <!-- Detalhes do Produto -->
-        <div class="col-md-6">
-            <h1 class="product-title"><?php echo htmlspecialchars($product['name']); ?></h1>
             
-            <div class="product-price">
-                <span class="price">R$ <?php echo number_format($product['price'], 2, ',', '.'); ?></span>
+            <!-- Additional Images Placeholder -->
+            <div class="grid grid-cols-4 gap-4">
+                <?php for ($i = 0; $i < 4; $i++): ?>
+                <div class="bg-sophisticated-light rounded-xl h-20 flex items-center justify-center">
+                    <i class="fas fa-image text-sophisticated-muted"></i>
+                </div>
+                <?php endfor; ?>
             </div>
-
-            <div class="product-description mt-3">
-                <h5>Descrição</h5>
-                <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
-            </div>
-
-            <div class="product-info mt-3">
-                <div class="row">
-                    <div class="col-6">
-                        <strong>Estoque:</strong> 
-                        <?php if ($product['stock'] > 0): ?>
-                            <span class="text-success"><?php echo $product['stock']; ?> unidades</span>
-                        <?php else: ?>
-                            <span class="text-danger">Indisponível</span>
-                        <?php endif; ?>
-                    </div>
-                    <div class="col-6">
-                        <strong>Categoria:</strong> 
-                        <span><?php echo htmlspecialchars($product['category_name'] ?? 'Sem categoria'); ?></span>
+        </div>
+        
+        <!-- Product Info -->
+        <div class="space-y-8">
+            <!-- Product Header -->
+            <div>
+                <div class="flex items-center space-x-3 mb-4">
+                    <span class="px-3 py-1 bg-sophisticated-primary/10 text-sophisticated-primary rounded-full text-sm font-semibold">
+                        <?= e($product['category_name']) ?>
+                    </span>
+                    <span class="px-3 py-1 <?= $product['stock'] > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?> rounded-full text-sm font-semibold">
+                        <?= $product['stock'] > 0 ? 'Em estoque' : 'Indisponível' ?>
+                    </span>
+                </div>
+                
+                <h1 class="text-3xl font-bold text-sophisticated-dark mb-4"><?= e($product['name']) ?></h1>
+                
+                <div class="flex items-center space-x-4 mb-6">
+                    <div class="flex items-center text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span class="text-sophisticated-muted ml-2">(4.8 - 127 avaliações)</span>
                     </div>
                 </div>
+                
+                <div class="text-4xl font-bold text-sophisticated-dark mb-6">
+                    <?= formatPrice($product['price']) ?>
+                </div>
+                
+                <?php if ($product['stock'] > 0): ?>
+                <p class="text-green-600 font-medium mb-6">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <?= $product['stock'] ?> unidades disponíveis
+                </p>
+                <?php endif; ?>
             </div>
-
-            <!-- Formulário para adicionar ao carrinho -->
+            
+            <!-- Product Description -->
+            <div>
+                <h3 class="text-lg font-semibold text-sophisticated-dark mb-4">Descrição</h3>
+                <p class="text-sophisticated-muted leading-relaxed">
+                    <?= nl2br(e($product['description'])) ?>
+                </p>
+            </div>
+            
+            <!-- Add to Cart -->
             <?php if ($product['stock'] > 0): ?>
-                <form action="/product/add-to-cart" method="POST" class="mt-4">
-                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+            <div class="bg-sophisticated-gray rounded-2xl p-6">
+                <form action="/cart/add" method="POST" class="space-y-4">
+                    <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
                     
-                    <div class="row align-items-end">
-                        <div class="col-md-4">
-                            <label for="quantity" class="form-label">Quantidade:</label>
+                    <div>
+                        <label for="quantity" class="block text-sm font-medium text-sophisticated-text mb-2">Quantidade</label>
+                        <div class="flex items-center space-x-3">
+                            <button type="button" onclick="updateQuantity(-1)" class="w-10 h-10 border border-sophisticated-border rounded-lg flex items-center justify-center text-sophisticated-muted hover:bg-white transition-colors duration-200">
+                                <i class="fas fa-minus"></i>
+                            </button>
                             <input type="number" 
-                                   class="form-control" 
                                    id="quantity" 
                                    name="quantity" 
                                    value="1" 
                                    min="1" 
-                                   max="<?php echo $product['stock']; ?>">
-                        </div>
-                        <div class="col-md-8">
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
-                                <i class="fas fa-shopping-cart me-2"></i>
-                                Adicionar ao Carrinho
+                                   max="<?= $product['stock'] ?>"
+                                   class="w-20 text-center border border-sophisticated-border rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-sophisticated-primary">
+                            <button type="button" onclick="updateQuantity(1)" class="w-10 h-10 border border-sophisticated-border rounded-lg flex items-center justify-center text-sophisticated-muted hover:bg-white transition-colors duration-200">
+                                <i class="fas fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                </form>
-            <?php else: ?>
-                <div class="mt-4">
-                    <button class="btn btn-secondary btn-lg w-100" disabled>
-                        <i class="fas fa-times me-2"></i>
-                        Produto Indisponível
+                    
+                    <button type="submit" class="w-full btn-primary py-4 px-6 rounded-xl font-semibold text-white text-lg">
+                        <i class="fas fa-cart-plus mr-2"></i>
+                        Adicionar ao Carrinho
                     </button>
+                </form>
+            </div>
+            <?php else: ?>
+            <div class="bg-red-50 border border-red-200 rounded-2xl p-6">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-500 mr-3"></i>
+                    <div>
+                        <h4 class="font-semibold text-red-800">Produto Indisponível</h4>
+                        <p class="text-red-700 text-sm">Este produto está temporariamente fora de estoque.</p>
+                    </div>
                 </div>
+            </div>
             <?php endif; ?>
-        </div>
-    </div>
-
-    <!-- Produtos Relacionados -->
-    <?php if (!empty($relatedProducts)): ?>
-        <div class="related-products mt-5">
-            <h3>Produtos Relacionados</h3>
-            <div class="row">
-                <?php foreach ($relatedProducts as $relatedProduct): ?>
-                    <?php if ($relatedProduct['id'] != $product['id']): ?>
-                        <div class="col-md-3 col-sm-6 mb-4">
-                            <div class="card h-100 product-card">
-                                <?php if ($relatedProduct['image_url']): ?>
-                                    <img src="<?php echo htmlspecialchars($relatedProduct['image_url']); ?>" 
-                                         class="card-img-top" 
-                                         alt="<?php echo htmlspecialchars($relatedProduct['name']); ?>">
-                                <?php else: ?>
-                                    <div class="card-img-top no-image-placeholder-small">
-                                        <i class="fas fa-image text-muted"></i>
-                                    </div>
-                                <?php endif; ?>
-                                
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($relatedProduct['name']); ?></h5>
-                                    <p class="card-text price">R$ <?php echo number_format($relatedProduct['price'], 2, ',', '.'); ?></p>
-                                    <a href="/product/<?php echo $relatedProduct['id']; ?>" class="btn btn-outline-primary btn-sm">
-                                        Ver Detalhes
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+            
+            <!-- Product Features -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold text-sophisticated-dark">Características</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-shipping-fast text-sophisticated-primary"></i>
+                        <span class="text-sophisticated-muted">Entrega gratuita</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-shield-alt text-sophisticated-primary"></i>
+                        <span class="text-sophisticated-muted">Garantia de 1 ano</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-undo text-sophisticated-primary"></i>
+                        <span class="text-sophisticated-muted">Devolução em 30 dias</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-headset text-sophisticated-primary"></i>
+                        <span class="text-sophisticated-muted">Suporte 24/7</span>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+    
+    <!-- Related Products -->
+    <?php if (!empty($relatedProducts)): ?>
+    <section class="mt-20">
+        <div class="mb-12">
+            <h2 class="text-3xl font-bold text-sophisticated-dark mb-4">Produtos Relacionados</h2>
+            <p class="text-sophisticated-muted">Você também pode gostar destes produtos</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <?php foreach ($relatedProducts as $relatedProduct): ?>
+            <div class="product-card bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col">
+                <div class="relative">
+                    <?php if ($relatedProduct['image_url']): ?>
+                        <img src="<?= e($relatedProduct['image_url']) ?>" class="w-full h-48 object-cover" alt="<?= e($relatedProduct['name']) ?>">
+                    <?php else: ?>
+                        <div class="w-full h-48 bg-gradient-to-br from-sophisticated-light to-sophisticated-border flex items-center justify-center">
+                            <i class="fas fa-image text-sophisticated-muted text-3xl"></i>
+                        </div>
+                    <?php endif; ?>
+                    
+                    <div class="absolute top-4 left-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold <?= getCategoryColorClass($relatedProduct['category_id']) ?>">
+                            <?= e($relatedProduct['category_name']) ?>
+                        </span>
+                    </div>
+
+                    <!-- Stock Badge -->
+                    <div class="absolute top-3 right-3">
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold <?= $relatedProduct['stock'] > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
+                            <?= $relatedProduct['stock'] > 0 ? 'Em estoque' : 'Indisponível' ?>
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex-grow">
+                        <h3 class="text-lg font-semibold text-sophisticated-dark mb-2 line-clamp-2 h-14"><?= e($relatedProduct['name']) ?></h3>
+                        <p class="text-sophisticated-muted text-sm mb-4 line-clamp-3 h-20"><?= e(substr($relatedProduct['description'], 0, 100)) ?>...</p>
+                    </div>
+
+                    <div class="mt-auto">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xl font-bold text-sophisticated-dark"><?= formatPrice($relatedProduct['price']) ?></span>
+                            <div class="flex items-center text-yellow-400">
+                                <i class="fas fa-star text-sm"></i>
+                                <i class="fas fa-star text-sm"></i>
+                                <i class="fas fa-star text-sm"></i>
+                                <i class="fas fa-star text-sm"></i>
+                                <i class="fas fa-star text-sm"></i>
+                                <span class="text-sophisticated-muted text-sm ml-1">(4.8)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <a href="/product/<?= $relatedProduct['id'] ?>" class="w-full py-2.5 px-4 border border-sophisticated-primary text-sophisticated-primary rounded-xl font-semibold hover:bg-sophisticated-primary hover:text-white transition-all duration-200 text-center block">
+                                Ver Detalhes
+                            </a>
+                            <?php if ($relatedProduct['stock'] > 0): ?>
+                            <form action="/cart/add" method="POST">
+                                <input type="hidden" name="product_id" value="<?= $relatedProduct['id'] ?>">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="w-full btn-primary py-2.5 px-4 rounded-xl font-semibold text-white">
+                                    <i class="fas fa-cart-plus mr-2"></i>Adicionar
+                                </button>
+                            </form>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
     <?php endif; ?>
 </div>
 
-<style>
-.product-image-container {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    text-align: center;
-    background: #f8f9fa;
+<script>
+function updateQuantity(change) {
+    const input = document.getElementById('quantity');
+    const currentValue = parseInt(input.value);
+    const newValue = Math.max(1, Math.min(<?= $product['stock'] ?>, currentValue + change));
+    input.value = newValue;
 }
-
-.product-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-}
-
-.no-image-placeholder {
-    padding: 60px 20px;
-    color: #6c757d;
-}
-
-.no-image-placeholder-small {
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f8f9fa;
-    color: #6c757d;
-}
-
-.product-title {
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.product-price .price {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #28a745;
-}
-
-.product-description {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.product-info {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.product-card {
-    transition: transform 0.2s;
-    border: 1px solid #ddd;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.product-card .card-img-top {
-    height: 200px;
-    object-fit: cover;
-}
-
-.breadcrumb a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-</style>
+</script>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?> 

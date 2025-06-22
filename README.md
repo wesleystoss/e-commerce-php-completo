@@ -1,120 +1,236 @@
-# E-commerce Básico (Loja Virtual)
+# TechStore - E-commerce Sofisticado
 
-Este é um projeto completo de e-commerce desenvolvido em PHP, utilizando Docker, Composer, MySQL e um front-end moderno com Bootstrap. O sistema permite cadastro e login de usuários, listagem de produtos, carrinho de compras, checkout simplificado, gerenciamento de estoque, pesquisa e filtragem, além de um painel administrativo.
+Um e-commerce moderno e elegante inspirado no design minimalista da Apple, desenvolvido com PHP puro e Tailwind CSS.
 
-## Funcionalidades
-- Cadastro e login de usuários
-- Listagem e busca de produtos
-- Filtros por categoria e preço
-- Carrinho de compras com sessão
-- Checkout simplificado (sem integração real de pagamento)
-- Controle de estoque
-- Relacionamento entre produtos, categorias, usuários, pedidos e itens de pedido
-- Painel administrativo (CRUD de produtos e categorias)
+## 🎨 Design System
 
-## Tecnologias Utilizadas
-- PHP 8.2
-- MySQL 8
-- Docker e Docker Compose
-- Composer
-- Bootstrap 5
-- PDO (acesso ao banco)
+### Paleta de Cores Sofisticada
+- **Primária**: `#475569` (Slate-600) - Cor principal para botões e elementos de destaque
+- **Secundária**: `#64748b` (Slate-500) - Cor de acento para gradientes e hover
+- **Escura**: `#1e293b` (Slate-800) - Texto principal e títulos
+- **Clara**: `#e2e8f0` (Slate-200) - Fundos de input e elementos secundários
+- **Borda**: `#cbd5e1` (Slate-300) - Bordas e divisores
+- **Texto**: `#475569` (Slate-600) - Texto secundário
+- **Muted**: `#94a3b8` (Slate-400) - Texto terciário e placeholders
 
-## Como rodar o projeto
+### Características do Design
+- **Minimalista**: Foco na simplicidade e elegância
+- **Sofisticado**: Paleta de cores neutras e profissionais
+- **Responsivo**: Design adaptável para todos os dispositivos
+- **Acessível**: Alto contraste e navegação intuitiva
+- **Moderno**: Animações suaves e micro-interações
+
+## 🚀 Tecnologias
+
+- **Backend**: PHP 8.0+
+- **Frontend**: Tailwind CSS
+- **Banco de Dados**: MySQL
+- **Ícones**: Font Awesome 6
+- **Fontes**: Inter (Google Fonts)
+- **Containerização**: Docker & Docker Compose
+
+## 📁 Estrutura do Projeto
+
+```
+e-commerce-basico/
+├── docker/                 # Configurações Docker
+│   ├── mysql/             # Configurações MySQL
+│   └── php/               # Configurações PHP
+├── src/                   # Código fonte
+│   ├── app/              # Aplicação principal
+│   │   ├── config/       # Configurações
+│   │   ├── controllers/  # Controladores
+│   │   ├── models/       # Modelos
+│   │   └── services/     # Serviços
+│   ├── public/           # Arquivos públicos
+│   ├── views/            # Templates
+│   │   ├── auth/         # Páginas de autenticação
+│   │   ├── cart/         # Páginas do carrinho
+│   │   ├── home/         # Página inicial
+│   │   ├── layouts/      # Layouts base
+│   │   ├── orders/       # Páginas de pedidos
+│   │   └── products/     # Páginas de produtos
+│   └── vendor/           # Dependências Composer
+├── docker-compose.yml    # Configuração Docker Compose
+├── Dockerfile           # Dockerfile da aplicação
+└── README.md           # Este arquivo
+```
+
+## ✨ Funcionalidades
+
+### 🛍️ E-commerce
+- **Catálogo de Produtos**: Visualização em grid com filtros avançados
+- **Detalhes do Produto**: Páginas completas com imagens e descrições
+- **Carrinho de Compras**: Gestão de itens com controles intuitivos
+- **Sistema de Pedidos**: Histórico completo e rastreamento
+- **Busca Inteligente**: Filtros por categoria, preço e disponibilidade
+
+### 👤 Usuários
+- **Autenticação**: Login e registro com validação
+- **Perfil do Usuário**: Gestão de dados pessoais
+- **Histórico de Pedidos**: Visualização detalhada de compras
+- **Alteração de Senha**: Sistema seguro de troca de senha
+
+### 🎨 Interface
+- **Design Responsivo**: Adaptável para mobile, tablet e desktop
+- **Navegação Intuitiva**: Menu dropdown e breadcrumbs
+- **Animações Suaves**: Transições e hover effects
+- **Loading States**: Indicadores de carregamento
+- **Feedback Visual**: Mensagens de sucesso e erro
+
+### 🔒 Segurança
+- **Validação de Dados**: Sanitização e validação de inputs
+- **Sessões Seguras**: Gestão segura de sessões de usuário
+- **SQL Injection Protection**: Prepared statements
+- **XSS Protection**: Escape de dados de saída
+
+## 🎯 Páginas Principais
+
+### 🏠 Página Inicial
+- Hero section com call-to-action
+- Produtos em destaque
+- Categorias principais
+- Newsletter signup
+- Seção de benefícios
+
+### 📱 Páginas de Produtos
+- **Listagem**: Grid responsivo com filtros
+- **Detalhes**: Layout em duas colunas com galeria
+- **Busca**: Resultados com filtros avançados
+- **Categoria**: Produtos por categoria
+
+### 🛒 Carrinho e Checkout
+- **Carrinho**: Resumo visual com controles
+- **Checkout**: Formulário de finalização
+- **Pagamento**: Múltiplas formas de pagamento
+
+### 👤 Área do Usuário
+- **Login/Registro**: Formulários minimalistas
+- **Perfil**: Gestão de dados pessoais
+- **Pedidos**: Histórico completo com timeline
+
+## 🚀 Instalação
 
 ### Pré-requisitos
-- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
+- Docker e Docker Compose
+- Git
 
-### Setup Automático (Recomendado)
+### Passos
 
-#### Linux/macOS:
+1. **Clone o repositório**
 ```bash
-chmod +x setup.sh
+git clone <url-do-repositorio>
+cd e-commerce-basico
+```
+
+2. **Configure o ambiente**
+```bash
+# Windows
+./setup.ps1
+
+# Linux/Mac
 ./setup.sh
 ```
 
-#### Windows (PowerShell):
-```powershell
-.\setup.ps1
+3. **Acesse a aplicação**
+```
+http://localhost:8080
 ```
 
-### Setup Manual
+### Configuração Manual
 
-1. Clone este repositório:
-   ```bash
-   git clone <url-do-repo>
-   cd e-commerce-basico
-   ```
-
-2. Copie o arquivo de variáveis de ambiente:
-   ```bash
-   cp src/env.example src/.env
-   ```
-   (Edite se desejar alterar configurações de banco ou SMTP)
-
-3. Suba os containers Docker:
-   ```bash
-   docker-compose up --build
-   ```
-
-4. Instale as dependências do PHP (dentro do container):
-   ```bash
-   docker-compose exec app composer install
-   ```
-
-5. Crie as tabelas do banco de dados (dentro do container):
-   ```bash
-   docker-compose exec db mysql -u ecommerce_user -ppassword ecommerce_db < /var/www/app/config/migrations.sql
-   ```
-
-6. (Opcional) Inserir dados de exemplo:
-   ```bash
-   docker-compose exec db mysql -u ecommerce_user -ppassword ecommerce_db < /var/www/app/config/sample_data.sql
-   ```
-
-7. Acesse o sistema:
-   - Front-end: [http://localhost:8001](http://localhost:8001)
-   - phpMyAdmin: [http://localhost:8080](http://localhost:8080) (usuário: `ecommerce_user`, senha: `password`)
-
-## Comandos Úteis
-
+1. **Configure o banco de dados**
 ```bash
-# Parar containers
-docker-compose down
+# Copie o arquivo de exemplo
+cp src/env.example src/.env
 
-# Ver logs
-docker-compose logs -f
-
-# Acessar container da aplicação
-docker-compose exec app bash
-
-# Acessar banco de dados
-docker-compose exec db mysql -u ecommerce_user -ppassword ecommerce_db
+# Edite as variáveis de ambiente
+DB_HOST=localhost
+DB_NAME=ecommerce
+DB_USER=root
+DB_PASS=password
 ```
 
-## Usuário Administrador
-Para criar um usuário administrador, após cadastrar um usuário, altere o campo `is_admin` para `1` na tabela `users` via phpMyAdmin ou MySQL:
-
-```sql
-UPDATE users SET is_admin = 1 WHERE email = 'seu-email@exemplo.com';
+2. **Instale as dependências**
+```bash
+cd src
+composer install
 ```
 
-## Estrutura de Pastas
-- `src/app/models` - Modelos do banco de dados
-- `src/app/controllers` - Controladores da aplicação
-- `src/app/services` - Serviços auxiliares (ex: carrinho)
-- `src/views` - Views (front-end)
-- `src/public` - Arquivo de entrada (index.php)
-- `src/app/config` - Configurações e migrations
+3. **Execute as migrações**
+```bash
+# Crie as tabelas no banco de dados
+# (Execute os scripts SQL fornecidos)
+```
 
-## Personalização
-- Adicione produtos, categorias e usuários pelo painel admin ou diretamente no banco.
-- Imagens de produtos podem ser URLs externas.
+## 🎨 Personalização
 
-## Observações
-- O checkout é simplificado, não há integração real com gateways de pagamento.
-- O sistema pode ser expandido facilmente para novas funcionalidades.
+### Cores
+As cores podem ser personalizadas editando as variáveis CSS no arquivo `src/views/layouts/header.php`:
+
+```css
+colors: {
+    'sophisticated-gray': '#f8fafc',
+    'sophisticated-dark': '#1e293b',
+    'sophisticated-accent': '#64748b',
+    'sophisticated-primary': '#475569',
+    // ... outras cores
+}
+```
+
+### Componentes
+Todos os componentes são construídos com Tailwind CSS e podem ser facilmente customizados através das classes utilitárias.
+
+## 📱 Responsividade
+
+O design é totalmente responsivo com breakpoints:
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px
+- **Desktop**: > 1024px
+
+## 🔧 Desenvolvimento
+
+### Estrutura MVC
+- **Models**: Lógica de negócio e acesso a dados
+- **Views**: Templates e apresentação
+- **Controllers**: Controle de fluxo e requisições
+
+### Padrões Utilizados
+- **Singleton**: Para conexão com banco de dados
+- **Factory**: Para criação de objetos
+- **Service Layer**: Para lógica de negócio complexa
+
+## 🚀 Deploy
+
+### Docker
+```bash
+docker-compose up -d
+```
+
+### Produção
+1. Configure um servidor web (Apache/Nginx)
+2. Configure o banco de dados MySQL
+3. Configure as variáveis de ambiente
+4. Execute `composer install --optimize-autoloader --no-dev`
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## 🆘 Suporte
+
+Para suporte, entre em contato através de:
+- Email: contato@techstore.com
+- Issues: GitHub Issues
 
 ---
 
-Desenvolvido para portfólio profissional. Dúvidas ou sugestões? Entre em contato! 
+**TechStore** - Tecnologia reimaginada com design sofisticado e funcionalidade excepcional. 
