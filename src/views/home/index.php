@@ -246,13 +246,89 @@
         <p class="text-xl text-white/90 mb-8">
             Receba ofertas exclusivas e seja o primeiro a conhecer nossos novos produtos
         </p>
-        <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-            <input type="email" placeholder="Seu melhor e-mail" 
-                   class="flex-1 px-6 py-4 rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-white/50 text-sophisticated-dark">
-            <button type="submit" class="px-8 py-4 bg-white text-sophisticated-primary rounded-full font-semibold hover:bg-sophisticated-gray transition-colors duration-200">
-                Inscrever-se
+        <form id="newsletterForm" class="flex flex-col gap-3 max-w-md mx-auto" method="POST" action="/newsletter/subscribe">
+            <input type="email" name="email" required placeholder="Seu melhor e-mail" 
+                   class="w-full px-4 py-3 text-base rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-white/50 text-sophisticated-dark">
+            <input type="text" name="phone" id="phone" required placeholder="Seu melhor número de WhatsApp" 
+                   class="w-full px-4 py-3 text-base rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-white/50 text-sophisticated-dark">
+            <button type="submit" class="w-full px-6 py-3 text-base bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white rounded-full font-bold hover:from-yellow-300 hover:via-orange-400 hover:to-red-400 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl animate-pulse">
+                <i class="fas fa-gift mr-2"></i>Inscrever-se e Ganhar Ofertas!
             </button>
         </form>
+        
+        <!-- Mensagem de resultado da newsletter -->
+        <div id="newsletterMessage" class="max-w-md mx-auto mt-4 hidden">
+            <div id="newsletterMessageContent" class="p-4 rounded-xl"></div>
+        </div>
+
+        <script>
+        // Máscara para telefone
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Limitar a 11 dígitos (DDD + 9 dígitos)
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            
+            // Aplicar máscara
+            if (value.length > 0) {
+                if (value.length <= 2) {
+                    value = `(${value}`;
+                } else if (value.length <= 7) {
+                    value = `(${value.substring(0, 2)}) ${value.substring(2)}`;
+                } else if (value.length <= 11) {
+                    value = `(${value.substring(0, 2)}) ${value.substring(2, 3)} ${value.substring(3, 7)}-${value.substring(7)}`;
+                }
+            }
+            
+            e.target.value = value;
+        });
+
+        // AJAX para formulário da newsletter
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const messageDiv = document.getElementById('newsletterMessage');
+            const messageContent = document.getElementById('newsletterMessageContent');
+            const submitButton = this.querySelector('button[type="submit"]');
+            
+            // Desabilitar botão e mostrar loading
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processando...';
+            
+            fetch('/newsletter/subscribe', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Mostrar mensagem
+                messageContent.className = `p-4 rounded-xl ${data.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+                messageContent.textContent = data.message;
+                messageDiv.classList.remove('hidden');
+                
+                // Se sucesso, limpar formulário
+                if (data.success) {
+                    this.reset();
+                }
+                
+                // Scroll suave para a mensagem
+                messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            })
+            .catch(error => {
+                messageContent.className = 'p-4 rounded-xl bg-red-100 text-red-800';
+                messageContent.textContent = 'Erro ao processar inscrição. Tente novamente.';
+                messageDiv.classList.remove('hidden');
+            })
+            .finally(() => {
+                // Reabilitar botão
+                submitButton.disabled = false;
+                submitButton.innerHTML = '<i class="fas fa-gift mr-2"></i>Inscrever-se e Ganhar Ofertas!';
+            });
+        });
+        </script>
     </div>
 </section>
 

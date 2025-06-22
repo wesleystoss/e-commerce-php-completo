@@ -94,6 +94,7 @@ $specific_routes = [
     'cart/checkout' => ['CartController', 'checkout'],
     'cart/processCheckout' => ['CartController', 'processCheckout'],
     'product/add-to-cart' => ['ProductController', 'addToCart'],
+    'newsletter/subscribe' => ['NewsletterController', 'subscribe'],
 ];
 
 // Verificar se é uma rota específica
