@@ -37,20 +37,59 @@
                     </div>
                     
                     <div>
-                        <label for="payment_method" class="block text-sm font-medium text-sophisticated-dark mb-2">
+                        <label class="block text-sm font-medium text-sophisticated-dark mb-4">
                             Forma de Pagamento
                         </label>
-                        <select 
-                            name="payment_method" 
-                            id="payment_method" 
-                            class="w-full px-4 py-3 border border-sophisticated-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sophisticated-primary focus:border-transparent transition-all duration-200 bg-white" 
-                            required
-                        >
-                            <option value="">Selecione uma forma de pagamento...</option>
-                            <option value="boleto" <?= (($_POST['payment_method'] ?? '') === 'boleto') ? 'selected' : '' ?>>Boleto Bancário</option>
-                            <option value="pix" <?= (($_POST['payment_method'] ?? '') === 'pix') ? 'selected' : '' ?>>PIX</option>
-                            <option value="cartao" <?= (($_POST['payment_method'] ?? '') === 'cartao') ? 'selected' : '' ?>>Cartão de Crédito</option>
-                        </select>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Boleto -->
+                            <div class="payment-option cursor-pointer border-2 border-sophisticated-border rounded-xl p-4 transition-all duration-200 hover:border-sophisticated-primary hover:shadow-md" data-payment="boleto">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-barcode text-white text-lg"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-sophisticated-dark">Boleto</h4>
+                                        <p class="text-sm text-sophisticated-muted">Pagamento via boleto bancário</p>
+                                    </div>
+                                    <div class="payment-check hidden">
+                                        <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- PIX -->
+                            <div class="payment-option cursor-pointer border-2 border-sophisticated-border rounded-xl p-4 transition-all duration-200 hover:border-sophisticated-primary hover:shadow-md" data-payment="pix">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-qrcode text-white text-lg"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-sophisticated-dark">PIX</h4>
+                                        <p class="text-sm text-sophisticated-muted">Pagamento instantâneo</p>
+                                    </div>
+                                    <div class="payment-check hidden">
+                                        <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cartão -->
+                            <div class="payment-option cursor-pointer border-2 border-sophisticated-border rounded-xl p-4 transition-all duration-200 hover:border-sophisticated-primary hover:shadow-md" data-payment="cartao">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-credit-card text-white text-lg"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-sophisticated-dark">Cartão</h4>
+                                        <p class="text-sm text-sophisticated-muted">Cartão de crédito</p>
+                                    </div>
+                                    <div class="payment-check hidden">
+                                        <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="payment_method" id="payment_method" value="" required>
                     </div>
                     
                     <!-- Campos do Cartão de Crédito -->
@@ -166,6 +205,31 @@
 </div>
 
 <script>
+    // Seleção de forma de pagamento
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const paymentMethod = this.dataset.payment;
+            
+            // Remover seleção anterior
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.remove('border-sophisticated-primary', 'bg-sophisticated-primary/5');
+                opt.classList.add('border-sophisticated-border');
+                opt.querySelector('.payment-check').classList.add('hidden');
+            });
+            
+            // Selecionar opção atual
+            this.classList.remove('border-sophisticated-border');
+            this.classList.add('border-sophisticated-primary', 'bg-sophisticated-primary/5');
+            this.querySelector('.payment-check').classList.remove('hidden');
+            
+            // Atualizar campo hidden
+            document.getElementById('payment_method').value = paymentMethod;
+            
+            // Mostrar/ocultar campos do cartão
+            toggleCardFields();
+        });
+    });
+    
     function toggleCardFields() {
         var payment = document.getElementById('payment_method').value;
         var cardFields = document.getElementById('credit-card-fields');
@@ -178,8 +242,6 @@
             cardFields.classList.remove('block');
         }
     }
-    
-    document.getElementById('payment_method').addEventListener('change', toggleCardFields);
     
     // Formatar número do cartão
     document.getElementById('card_number').addEventListener('input', function(e) {
@@ -205,6 +267,15 @@
     // Inicializar campos do cartão
     window.addEventListener('DOMContentLoaded', function() {
         toggleCardFields();
+        
+        // Se houver valor pré-selecionado (ex: após erro de validação)
+        const savedPayment = '<?= e($_POST['payment_method'] ?? '') ?>';
+        if (savedPayment) {
+            const option = document.querySelector(`[data-payment="${savedPayment}"]`);
+            if (option) {
+                option.click();
+            }
+        }
     });
 </script>
 
