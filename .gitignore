@@ -1,0 +1,36 @@
+# Ignorar dependências do Composer
+/vendor/
+
+# Ignorar arquivos e pastas do Docker
+/docker/mysql/data/
+/docker/mysql/init/
+
+# Ignorar arquivos temporários do sistema
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Ignorar arquivos de banco de dados
+*.sql
+*.sqlite
+*.db
+*.ibd
+*.cnf
+*.sock
+*.pid
+*.err
+
+# Ignorar arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos de cache do PHP
+*.cache
+
+# Ignorar arquivos de ambiente
+.env
+.env.*
+
+# Ignorar arquivos de testes
+/test_*.php 
