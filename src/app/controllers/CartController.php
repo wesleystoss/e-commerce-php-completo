@@ -187,10 +187,26 @@ class CartController
             $card_number = trim($_POST['card_number'] ?? '');
             $card_expiry = trim($_POST['card_expiry'] ?? '');
             $card_cvv = trim($_POST['card_cvv'] ?? '');
+            $installments = (int)($_POST['installments'] ?? 1);
+            
             if (empty($card_name) || empty($card_number) || empty($card_expiry) || empty($card_cvv)) {
                 $_SESSION['error'] = 'Preencha todos os dados do cartão.';
                 header('Location: /cart/checkout');
                 exit;
+            }
+            
+            // Validar número de parcelas
+            if ($installments < 1 || $installments > 12) {
+                $_SESSION['error'] = 'Número de parcelas inválido.';
+                header('Location: /cart/checkout');
+                exit;
+            }
+            
+            // Calcular valor total com juros se necessário
+            $total = $this->cartService->getTotal();
+            if ($installments > 6) {
+                $interestRate = 0.0299; // 2.99% ao mês
+                $total = $total * pow(1 + $interestRate, $installments);
             }
         }
 
@@ -239,7 +255,8 @@ class CartController
             } elseif ($payment_method === 'pix') {
                 $_SESSION['success'] = 'Pedido realizado! Número do pedido: #' . $order_id . '<br>Use o QR Code do Pix para pagamento.';
             } else {
-                $_SESSION['success'] = 'Pedido realizado! Número do pedido: #' . $order_id . '<br>Pagamento com cartão de crédito aprovado!';
+                $installmentText = $installments > 6 ? " em {$installments}x com juros" : " em {$installments}x sem juros";
+                $_SESSION['success'] = 'Pedido realizado! Número do pedido: #' . $order_id . '<br>Pagamento com cartão de crédito aprovado' . $installmentText . '!';
             }
             header('Location: /orders/' . $order_id);
 
