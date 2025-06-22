@@ -82,7 +82,8 @@ $routes = [
     'profile' => ['AuthController', 'profile'],
     'orders' => ['OrderController', 'index'],
     'order' => ['OrderController', 'show'],
-    'admin' => ['AdminController', 'index']
+    'admin' => ['AdminController', 'index'],
+    'contact' => ['ContactController', 'index']
 ];
 
 // Mapeamento específico para rotas com subações
