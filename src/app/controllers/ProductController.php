@@ -21,9 +21,9 @@ class ProductController
 
     public function index()
     {
-        $page = $_GET['page'] ?? 1;
+        $currentPage = $_GET['page'] ?? 1;
         $limit = 12;
-        $offset = ($page - 1) * $limit;
+        $offset = ($currentPage - 1) * $limit;
 
         $products = $this->productModel->getAll($limit, $offset);
         $categories = $this->categoryModel->getAll();
