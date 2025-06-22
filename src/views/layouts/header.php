@@ -210,6 +210,7 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="/" class="text-sophisticated-text hover:text-sophisticated-primary transition-colors duration-200 font-medium">Início</a>
                     <a href="/products" class="text-sophisticated-text hover:text-sophisticated-primary transition-colors duration-200 font-medium">Produtos</a>
+                    <a href="/contact" class="text-sophisticated-text hover:text-sophisticated-primary transition-colors duration-200 font-medium">Contato</a>
                     
                     <!-- Categories Dropdown -->
                     <div class="relative group">
@@ -304,6 +305,7 @@
             <div class="px-4 py-3 space-y-3 border-t border-sophisticated-border bg-white">
                 <a href="/" class="block py-2 text-sophisticated-text hover:text-sophisticated-primary transition-colors duration-200">Início</a>
                 <a href="/products" class="block py-2 text-sophisticated-text hover:text-sophisticated-primary transition-colors duration-200">Produtos</a>
+                <a href="/contact" class="block py-2 text-sophisticated-text hover:text-sophisticated-primary transition-colors duration-200">Contato</a>
                 <div class="py-2">
                     <span class="block text-sophisticated-text font-medium mb-2">Categorias</span>
                     <?php foreach ($menuCategories as $category): ?>
