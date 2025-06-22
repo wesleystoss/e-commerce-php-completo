@@ -25,12 +25,27 @@ Este é um projeto completo de e-commerce desenvolvido em PHP, utilizando Docker
 ### Pré-requisitos
 - [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
 
-### Passos
+### Setup Automático (Recomendado)
+
+#### Linux/macOS:
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+#### Windows (PowerShell):
+```powershell
+.\setup.ps1
+```
+
+### Setup Manual
+
 1. Clone este repositório:
    ```bash
    git clone <url-do-repo>
-   cd Portifólio
+   cd e-commerce-basico
    ```
+
 2. Copie o arquivo de variáveis de ambiente:
    ```bash
    cp src/env.example src/.env
@@ -52,9 +67,30 @@ Este é um projeto completo de e-commerce desenvolvido em PHP, utilizando Docker
    docker-compose exec db mysql -u ecommerce_user -ppassword ecommerce_db < /var/www/app/config/migrations.sql
    ```
 
-6. Acesse o sistema:
+6. (Opcional) Inserir dados de exemplo:
+   ```bash
+   docker-compose exec db mysql -u ecommerce_user -ppassword ecommerce_db < /var/www/app/config/sample_data.sql
+   ```
+
+7. Acesse o sistema:
    - Front-end: [http://localhost:8001](http://localhost:8001)
    - phpMyAdmin: [http://localhost:8080](http://localhost:8080) (usuário: `ecommerce_user`, senha: `password`)
+
+## Comandos Úteis
+
+```bash
+# Parar containers
+docker-compose down
+
+# Ver logs
+docker-compose logs -f
+
+# Acessar container da aplicação
+docker-compose exec app bash
+
+# Acessar banco de dados
+docker-compose exec db mysql -u ecommerce_user -ppassword ecommerce_db
+```
 
 ## Usuário Administrador
 Para criar um usuário administrador, após cadastrar um usuário, altere o campo `is_admin` para `1` na tabela `users` via phpMyAdmin ou MySQL:
