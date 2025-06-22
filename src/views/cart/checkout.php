@@ -8,81 +8,201 @@
     <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
 <?php endif; ?>
 
-<h2 class="mb-4">Finalizar Compra</h2>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-sophisticated-dark mb-2">Finalizar Compra</h1>
+        <p class="text-sophisticated-muted">Complete suas informações para finalizar o pedido</p>
+    </div>
 
-<form action="/cart/processCheckout" method="POST" class="row g-3" id="checkout-form">
-    <div class="col-md-8">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">Endereço de Entrega</h5>
-            </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label for="shipping_address" class="form-label">Endereço Completo</label>
-                    <textarea name="shipping_address" id="shipping_address" class="form-control" rows="3" required><?= e($_POST['shipping_address'] ?? '') ?></textarea>
+    <form action="/cart/processCheckout" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="checkout-form">
+        <!-- Formulário Principal -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-sm border border-sophisticated-border overflow-hidden">
+                <div class="bg-sophisticated-gray px-6 py-4 border-b border-sophisticated-border">
+                    <h2 class="text-xl font-semibold text-sophisticated-dark">Endereço de Entrega</h2>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Forma de Pagamento</label>
-                    <select name="payment_method" id="payment_method" class="form-select" required>
-                        <option value="">Selecione...</option>
-                        <option value="boleto" <?= (($_POST['payment_method'] ?? '') === 'boleto') ? 'selected' : '' ?>>Boleto</option>
-                        <option value="pix" <?= (($_POST['payment_method'] ?? '') === 'pix') ? 'selected' : '' ?>>Pix</option>
-                        <option value="cartao" <?= (($_POST['payment_method'] ?? '') === 'cartao') ? 'selected' : '' ?>>Cartão de Crédito</option>
-                    </select>
-                </div>
-                <div id="credit-card-fields" style="display: none;">
-                    <div class="mb-3">
-                        <label for="card_name" class="form-label">Nome no Cartão</label>
-                        <input type="text" name="card_name" id="card_name" class="form-control" value="<?= e($_POST['card_name'] ?? '') ?>">
+                <div class="p-6 space-y-6">
+                    <div>
+                        <label for="shipping_address" class="block text-sm font-medium text-sophisticated-dark mb-2">
+                            Endereço Completo
+                        </label>
+                        <textarea 
+                            name="shipping_address" 
+                            id="shipping_address" 
+                            class="w-full px-4 py-3 border border-sophisticated-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sophisticated-primary focus:border-transparent transition-all duration-200 resize-none" 
+                            rows="3" 
+                            required
+                            placeholder="Digite seu endereço completo..."
+                        ><?= e($_POST['shipping_address'] ?? '') ?></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="card_number" class="form-label">Número do Cartão</label>
-                        <input type="text" name="card_number" id="card_number" class="form-control" maxlength="19" value="<?= e($_POST['card_number'] ?? '') ?>">
+                    
+                    <div>
+                        <label for="payment_method" class="block text-sm font-medium text-sophisticated-dark mb-2">
+                            Forma de Pagamento
+                        </label>
+                        <select 
+                            name="payment_method" 
+                            id="payment_method" 
+                            class="w-full px-4 py-3 border border-sophisticated-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sophisticated-primary focus:border-transparent transition-all duration-200 bg-white" 
+                            required
+                        >
+                            <option value="">Selecione uma forma de pagamento...</option>
+                            <option value="boleto" <?= (($_POST['payment_method'] ?? '') === 'boleto') ? 'selected' : '' ?>>Boleto Bancário</option>
+                            <option value="pix" <?= (($_POST['payment_method'] ?? '') === 'pix') ? 'selected' : '' ?>>PIX</option>
+                            <option value="cartao" <?= (($_POST['payment_method'] ?? '') === 'cartao') ? 'selected' : '' ?>>Cartão de Crédito</option>
+                        </select>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="card_expiry" class="form-label">Validade (MM/AA)</label>
-                            <input type="text" name="card_expiry" id="card_expiry" class="form-control" maxlength="5" value="<?= e($_POST['card_expiry'] ?? '') ?>">
+                    
+                    <!-- Campos do Cartão de Crédito -->
+                    <div id="credit-card-fields" class="hidden space-y-6 p-6 bg-sophisticated-gray/50 rounded-xl border border-sophisticated-border/50">
+                        <h3 class="text-lg font-semibold text-sophisticated-dark mb-4">Dados do Cartão</h3>
+                        
+                        <div>
+                            <label for="card_name" class="block text-sm font-medium text-sophisticated-dark mb-2">
+                                Nome no Cartão
+                            </label>
+                            <input 
+                                type="text" 
+                                name="card_name" 
+                                id="card_name" 
+                                class="w-full px-4 py-3 border border-sophisticated-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sophisticated-primary focus:border-transparent transition-all duration-200" 
+                                placeholder="Nome como está no cartão"
+                                value="<?= e($_POST['card_name'] ?? '') ?>"
+                            >
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="card_cvv" class="form-label">CVV</label>
-                            <input type="text" name="card_cvv" id="card_cvv" class="form-control" maxlength="4" value="<?= e($_POST['card_cvv'] ?? '') ?>">
+                        
+                        <div>
+                            <label for="card_number" class="block text-sm font-medium text-sophisticated-dark mb-2">
+                                Número do Cartão
+                            </label>
+                            <input 
+                                type="text" 
+                                name="card_number" 
+                                id="card_number" 
+                                class="w-full px-4 py-3 border border-sophisticated-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sophisticated-primary focus:border-transparent transition-all duration-200" 
+                                maxlength="19" 
+                                placeholder="0000 0000 0000 0000"
+                                value="<?= e($_POST['card_number'] ?? '') ?>"
+                            >
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="card_expiry" class="block text-sm font-medium text-sophisticated-dark mb-2">
+                                    Validade (MM/AA)
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="card_expiry" 
+                                    id="card_expiry" 
+                                    class="w-full px-4 py-3 border border-sophisticated-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sophisticated-primary focus:border-transparent transition-all duration-200" 
+                                    maxlength="5" 
+                                    placeholder="MM/AA"
+                                    value="<?= e($_POST['card_expiry'] ?? '') ?>"
+                                >
+                            </div>
+                            <div>
+                                <label for="card_cvv" class="block text-sm font-medium text-sophisticated-dark mb-2">
+                                    CVV
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="card_cvv" 
+                                    id="card_cvv" 
+                                    class="w-full px-4 py-3 border border-sophisticated-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sophisticated-primary focus:border-transparent transition-all duration-200" 
+                                    maxlength="4" 
+                                    placeholder="123"
+                                    value="<?= e($_POST['card_cvv'] ?? '') ?>"
+                                >
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">Resumo do Pedido</h5>
-            </div>
-            <div class="card-body">
-                <ul class="list-group mb-3">
-                    <?php foreach ($cartItems as $item): ?>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <span><?= e($item['name']) ?> <small class="text-muted">x<?= $item['quantity'] ?></small></span>
-                        <span><?= formatPrice($item['price'] * $item['quantity']) ?></span>
-                    </li>
-                    <?php endforeach; ?>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <strong>Total</strong>
-                        <strong><?= formatPrice($total) ?></strong>
-                    </li>
-                </ul>
-                <button type="submit" class="btn btn-success w-100 btn-lg">Confirmar Pedido</button>
+        
+        <!-- Resumo do Pedido -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-sm border border-sophisticated-border overflow-hidden sticky top-24">
+                <div class="bg-sophisticated-gray px-6 py-4 border-b border-sophisticated-border">
+                    <h2 class="text-xl font-semibold text-sophisticated-dark">Resumo do Pedido</h2>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4 mb-6">
+                        <?php foreach ($cartItems as $item): ?>
+                        <div class="flex justify-between items-start py-3 border-b border-sophisticated-border/50 last:border-b-0">
+                            <div class="flex-1">
+                                <h4 class="font-medium text-sophisticated-dark"><?= e($item['name']) ?></h4>
+                                <p class="text-sm text-sophisticated-muted">Quantidade: <?= $item['quantity'] ?></p>
+                            </div>
+                            <span class="font-semibold text-sophisticated-dark"><?= formatPrice($item['price'] * $item['quantity']) ?></span>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    
+                    <div class="border-t border-sophisticated-border pt-4 mb-6">
+                        <div class="flex justify-between items-center text-lg font-bold text-sophisticated-dark">
+                            <span>Total</span>
+                            <span><?= formatPrice($total) ?></span>
+                        </div>
+                    </div>
+                    
+                    <button 
+                        type="submit" 
+                        class="w-full bg-gradient-to-r from-sophisticated-primary to-sophisticated-accent hover:from-sophisticated-accent hover:to-sophisticated-primary text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 hover:shadow-lg"
+                    >
+                        <i class="fas fa-lock mr-2"></i>
+                        Confirmar Pedido
+                    </button>
+                    
+                    <p class="text-xs text-sophisticated-muted text-center mt-4">
+                        <i class="fas fa-shield-alt mr-1"></i>
+                        Pagamento seguro e criptografado
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+
 <script>
     function toggleCardFields() {
         var payment = document.getElementById('payment_method').value;
         var cardFields = document.getElementById('credit-card-fields');
-        cardFields.style.display = (payment === 'cartao') ? 'block' : 'none';
+        
+        if (payment === 'cartao') {
+            cardFields.classList.remove('hidden');
+            cardFields.classList.add('block');
+        } else {
+            cardFields.classList.add('hidden');
+            cardFields.classList.remove('block');
+        }
     }
+    
     document.getElementById('payment_method').addEventListener('change', toggleCardFields);
+    
+    // Formatar número do cartão
+    document.getElementById('card_number').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+        e.target.value = value;
+    });
+    
+    // Formatar data de validade
+    document.getElementById('card_expiry').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        e.target.value = value;
+    });
+    
+    // Formatar CVV
+    document.getElementById('card_cvv').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/\D/g, '');
+    });
+    
+    // Inicializar campos do cartão
     window.addEventListener('DOMContentLoaded', function() {
         toggleCardFields();
     });
