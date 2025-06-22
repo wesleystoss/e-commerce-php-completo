@@ -125,7 +125,7 @@
                             >
                         </div>
                         
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-3 gap-4">
                             <div>
                                 <label for="card_expiry" class="block text-sm font-medium text-sophisticated-dark mb-2">
                                     Validade (MM/AA)
@@ -153,6 +153,48 @@
                                     placeholder="123"
                                     value="<?= e($_POST['card_cvv'] ?? '') ?>"
                                 >
+                            </div>
+                            <div>
+                                <label for="installments" class="block text-sm font-medium text-sophisticated-dark mb-2">
+                                    Parcelas
+                                </label>
+                                <select 
+                                    name="installments" 
+                                    id="installments" 
+                                    class="w-full px-4 py-3 border border-sophisticated-border rounded-xl focus:outline-none focus:ring-2 focus:ring-sophisticated-primary focus:border-transparent transition-all duration-200 bg-white"
+                                >
+                                    <option value="1">1x sem juros</option>
+                                    <option value="2">2x sem juros</option>
+                                    <option value="3">3x sem juros</option>
+                                    <option value="4">4x sem juros</option>
+                                    <option value="5">5x sem juros</option>
+                                    <option value="6">6x sem juros</option>
+                                    <option value="7">7x com juros</option>
+                                    <option value="8">8x com juros</option>
+                                    <option value="9">9x com juros</option>
+                                    <option value="10">10x com juros</option>
+                                    <option value="11">11x com juros</option>
+                                    <option value="12">12x com juros</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Resumo do Parcelamento -->
+                        <div id="installment-summary" class="bg-white rounded-xl p-4 border border-sophisticated-border/50">
+                            <h4 class="font-semibold text-sophisticated-dark mb-2">Resumo do Parcelamento</h4>
+                            <div class="text-sm text-sophisticated-muted">
+                                <div class="flex justify-between items-center">
+                                    <span>Valor total:</span>
+                                    <span class="font-medium text-sophisticated-dark"><?= formatPrice($total) ?></span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span>Número de parcelas:</span>
+                                    <span class="font-medium text-sophisticated-dark" id="installment-count">1x</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-1">
+                                    <span>Valor da parcela:</span>
+                                    <span class="font-medium text-sophisticated-dark" id="installment-value"><?= formatPrice($total) ?></span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -264,6 +306,42 @@
         e.target.value = e.target.value.replace(/\D/g, '');
     });
     
+    // Calcular parcelas
+    function updateInstallmentSummary() {
+        const total = <?= $total ?>; // Valor total do PHP
+        const installments = parseInt(document.getElementById('installments').value);
+        const installmentCount = document.getElementById('installment-count');
+        const installmentValue = document.getElementById('installment-value');
+        
+        let installmentAmount = total;
+        let installmentText = `${installments}x`;
+        
+        // Aplicar juros para parcelas acima de 6x (taxa de 2.99% ao mês)
+        if (installments > 6) {
+            const interestRate = 0.0299; // 2.99% ao mês
+            const totalWithInterest = total * Math.pow(1 + interestRate, installments);
+            installmentAmount = totalWithInterest / installments;
+            installmentText = `${installments}x com juros`;
+        } else {
+            installmentAmount = total / installments;
+            installmentText = `${installments}x sem juros`;
+        }
+        
+        installmentCount.textContent = installmentText;
+        installmentValue.textContent = formatCurrency(installmentAmount);
+    }
+    
+    // Função para formatar moeda
+    function formatCurrency(value) {
+        return 'R$ ' + value.toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+    
+    // Event listener para mudança de parcelas
+    document.getElementById('installments').addEventListener('change', updateInstallmentSummary);
+    
     // Inicializar campos do cartão
     window.addEventListener('DOMContentLoaded', function() {
         toggleCardFields();
@@ -276,6 +354,9 @@
                 option.click();
             }
         }
+        
+        // Inicializar resumo de parcelas
+        updateInstallmentSummary();
     });
 </script>
 
