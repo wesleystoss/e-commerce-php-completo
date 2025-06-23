@@ -19,6 +19,26 @@ if (file_exists($envFile)) {
     }
 }
 
+// Include manual dos arquivos principais (solução definitiva)
+require_once __DIR__ . '/../app/controllers/HomeController.php';
+require_once __DIR__ . '/../app/controllers/ProductController.php';
+require_once __DIR__ . '/../app/controllers/CartController.php';
+require_once __DIR__ . '/../app/controllers/AuthController.php';
+require_once __DIR__ . '/../app/controllers/OrderController.php';
+require_once __DIR__ . '/../app/controllers/AdminController.php';
+require_once __DIR__ . '/../app/controllers/ContactController.php';
+require_once __DIR__ . '/../app/controllers/NewsletterController.php';
+
+require_once __DIR__ . '/../app/models/Product.php';
+require_once __DIR__ . '/../app/models/Category.php';
+require_once __DIR__ . '/../app/models/User.php';
+require_once __DIR__ . '/../app/models/Order.php';
+require_once __DIR__ . '/../app/models/OrderItem.php';
+require_once __DIR__ . '/../app/models/Newsletter.php';
+
+require_once __DIR__ . '/../app/config/Database.php';
+require_once __DIR__ . '/../app/services/CartService.php';
+
 // Iniciar sessão
 session_start();
 
