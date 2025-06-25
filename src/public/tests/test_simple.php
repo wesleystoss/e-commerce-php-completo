@@ -8,7 +8,7 @@ echo "<h1>Teste Simples do Sistema</h1>";
 
 // 1. Teste de carregamento de variáveis de ambiente
 echo "<h2>1. Teste de Variáveis de Ambiente</h2>";
-$envFile = __DIR__ . '/.env';
+$envFile = __DIR__ . '/../../.env';
 if (file_exists($envFile)) {
     echo "<p style='color: green;'>✅ Arquivo .env encontrado</p>";
     
@@ -30,7 +30,7 @@ if (file_exists($envFile)) {
 // 2. Teste de conexão com banco de dados
 echo "<h2>2. Teste de Conexão com Banco de Dados</h2>";
 try {
-    require_once __DIR__ . '/app/config/Database.php';
+    require_once __DIR__ . '/../../app/config/Database.php';
     $db = App\Config\Database::getInstance();
     echo "<p style='color: green;'>✅ Conexão com banco de dados estabelecida</p>";
     
@@ -67,7 +67,7 @@ $files = [
 ];
 
 foreach ($files as $file) {
-    $full_path = __DIR__ . "/$file";
+    $full_path = __DIR__ . "/../../$file";
     if (file_exists($full_path)) {
         // Tentar incluir o arquivo
         try {
@@ -94,7 +94,7 @@ $views = [
 ];
 
 foreach ($views as $view) {
-    $file = __DIR__ . "/$view";
+    $file = __DIR__ . "/../../$view";
     if (file_exists($file)) {
         echo "<p style='color: green;'>✅ $view</p>";
     } else {

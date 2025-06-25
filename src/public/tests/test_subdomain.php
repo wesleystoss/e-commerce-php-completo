@@ -99,7 +99,7 @@ foreach ($test_urls as $test_url) {
         echo "<p style='color: green;'>✅ Rota mapeada: $controller_class -> $action_name</p>";
         
         // Verificar se o arquivo do controlador existe
-        $controller_file = __DIR__ . "/../app/controllers/$controller_class.php";
+        $controller_file = __DIR__ . "/../../app/controllers/$controller_class.php";
         if (file_exists($controller_file)) {
             echo "<p style='color: green;'>✅ Arquivo do controlador existe: $controller_class.php</p>";
         } else {

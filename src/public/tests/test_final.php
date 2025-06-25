@@ -8,7 +8,7 @@ echo "<h1>Teste Final do Sistema</h1>";
 
 // 1. Teste de carregamento de variáveis de ambiente
 echo "<h2>1. Teste de Variáveis de Ambiente</h2>";
-$envFile = __DIR__ . '/.env';
+$envFile = __DIR__ . '/../../.env';
 if (file_exists($envFile)) {
     echo "<p style='color: green;'>✅ Arquivo .env encontrado</p>";
     
@@ -30,7 +30,7 @@ if (file_exists($envFile)) {
 // 2. Teste de conexão com banco de dados
 echo "<h2>2. Teste de Conexão com Banco de Dados</h2>";
 try {
-    require_once __DIR__ . '/app/config/Database.php';
+    require_once __DIR__ . '/../../app/config/Database.php';
     $db = App\Config\Database::getInstance();
     echo "<p style='color: green;'>✅ Conexão com banco de dados estabelecida</p>";
     
@@ -62,7 +62,7 @@ foreach ($controllers as $controller) {
     try {
         // Extrair o nome da classe sem namespace para o require
         $class_name = basename(str_replace('\\', '/', $controller));
-        require_once __DIR__ . "/app/controllers/$class_name.php";
+        require_once __DIR__ . "/../../app/controllers/$class_name.php";
         $instance = new $controller();
         echo "<p style='color: green;'>✅ $class_name instanciado com sucesso</p>";
     } catch (Exception $e) {
@@ -95,7 +95,7 @@ foreach ($routes as $route => $mapping) {
     $action_name = $mapping[1];
     
     // Verificar se o arquivo existe
-    $controller_file = __DIR__ . "/app/controllers/$controller_class.php";
+    $controller_file = __DIR__ . "/../../app/controllers/$controller_class.php";
     if (file_exists($controller_file)) {
         echo "<p style='color: green;'>✅ Rota '$route' -> $controller_class::$action_name</p>";
     } else {
@@ -116,7 +116,7 @@ $views = [
 ];
 
 foreach ($views as $view) {
-    $file = __DIR__ . "/$view";
+    $file = __DIR__ . "/../../$view";
     if (file_exists($file)) {
         echo "<p style='color: green;'>✅ $view</p>";
     } else {
