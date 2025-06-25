@@ -50,10 +50,16 @@ mb_internal_encoding('UTF-8');
 
 // Função para obter a URL base
 function baseUrl($path = '') {
-    $base = 'http://' . $_SERVER['HTTP_HOST'];
-    if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != '80') {
-        $base .= ':' . $_SERVER['SERVER_PORT'];
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+    $base = $protocol . '://' . $_SERVER['HTTP_HOST'];
+    
+    // Adicionar o subdiretório se estiver em um
+    $script_name = $_SERVER['SCRIPT_NAME'];
+    $subdirectory = dirname($script_name);
+    if ($subdirectory !== '/') {
+        $base .= $subdirectory;
     }
+    
     return $base . $path;
 }
 
@@ -77,6 +83,21 @@ function formatPrice($price) {
 $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 
+// Debug temporário
+error_log("REQUEST_URI: " . $request_uri);
+error_log("PATH inicial: " . $path);
+
+// Remover o subdiretório do path se existir
+$script_name = $_SERVER['SCRIPT_NAME'];
+$subdirectory = dirname($script_name);
+if ($subdirectory !== '/') {
+    $path = str_replace($subdirectory, '', $path);
+}
+
+error_log("SCRIPT_NAME: " . $script_name);
+error_log("SUBDIRECTORY: " . $subdirectory);
+error_log("PATH após remoção subdir: " . $path);
+
 // Remover base path se necessário
 $base_path = '/';
 if (strpos($path, $base_path) === 0) {
@@ -90,6 +111,8 @@ $path = rtrim($path, '/');
 if (empty($path)) {
     $path = 'home';
 }
+
+error_log("PATH final: " . $path);
 
 // Dividir path em partes
 $path_parts = explode('/', $path);
