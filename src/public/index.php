@@ -166,6 +166,8 @@ if (isset($specific_routes[$full_path])) {
 }
 
 try {
+    // Adicionar namespace aos controladores
+    $controller_class = 'App\\Controllers\\' . $controller_class;
     $controller_instance = new $controller_class();
     
     // Verificar se o método existe

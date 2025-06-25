@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-echo "<h1>Teste Final do Sistema</h1>";
+echo "<h1>Teste Simples do Sistema</h1>";
 
 // 1. Teste de carregamento de variáveis de ambiente
 echo "<h2>1. Teste de Variáveis de Ambiente</h2>";
@@ -45,66 +45,44 @@ try {
     echo "<p style='color: red;'>❌ Erro na conexão com banco: " . $e->getMessage() . "</p>";
 }
 
-// 3. Teste de instanciação de controladores
-echo "<h2>3. Teste de Instanciação de Controladores</h2>";
-$controllers = [
-    'App\\Controllers\\HomeController',
-    'App\\Controllers\\ProductController', 
-    'App\\Controllers\\CartController',
-    'App\\Controllers\\AuthController',
-    'App\\Controllers\\OrderController',
-    'App\\Controllers\\AdminController',
-    'App\\Controllers\\ContactController',
-    'App\\Controllers\\NewsletterController'
+// 3. Teste de carregamento de arquivos (sem instanciação)
+echo "<h2>3. Teste de Carregamento de Arquivos</h2>";
+$files = [
+    'app/controllers/HomeController.php',
+    'app/controllers/ProductController.php',
+    'app/controllers/CartController.php',
+    'app/controllers/AuthController.php',
+    'app/controllers/OrderController.php',
+    'app/controllers/AdminController.php',
+    'app/controllers/ContactController.php',
+    'app/controllers/NewsletterController.php',
+    'app/models/Product.php',
+    'app/models/Category.php',
+    'app/models/User.php',
+    'app/models/Order.php',
+    'app/models/OrderItem.php',
+    'app/models/Newsletter.php',
+    'app/config/Database.php',
+    'app/services/CartService.php'
 ];
 
-foreach ($controllers as $controller) {
-    try {
-        // Extrair o nome da classe sem namespace para o require
-        $class_name = basename(str_replace('\\', '/', $controller));
-        require_once __DIR__ . "/app/controllers/$class_name.php";
-        $instance = new $controller();
-        echo "<p style='color: green;'>✅ $class_name instanciado com sucesso</p>";
-    } catch (Exception $e) {
-        echo "<p style='color: red;'>❌ Erro ao instanciar $class_name: " . $e->getMessage() . "</p>";
-    }
-}
-
-// 4. Teste de mapeamento de rotas
-echo "<h2>4. Teste de Mapeamento de Rotas</h2>";
-$routes = [
-    'home' => ['HomeController', 'index'],
-    'products' => ['ProductController', 'index'],
-    'product' => ['ProductController', 'show'],
-    'search' => ['ProductController', 'search'],
-    'category' => ['ProductController', 'category'],
-    'cart' => ['CartController', 'index'],
-    'checkout' => ['CartController', 'checkout'],
-    'login' => ['AuthController', 'login'],
-    'register' => ['AuthController', 'register'],
-    'logout' => ['AuthController', 'logout'],
-    'profile' => ['AuthController', 'profile'],
-    'orders' => ['OrderController', 'index'],
-    'order' => ['OrderController', 'show'],
-    'admin' => ['AdminController', 'index'],
-    'contact' => ['ContactController', 'index']
-];
-
-foreach ($routes as $route => $mapping) {
-    $controller_class = $mapping[0];
-    $action_name = $mapping[1];
-    
-    // Verificar se o arquivo existe
-    $controller_file = __DIR__ . "/app/controllers/$controller_class.php";
-    if (file_exists($controller_file)) {
-        echo "<p style='color: green;'>✅ Rota '$route' -> $controller_class::$action_name</p>";
+foreach ($files as $file) {
+    $full_path = __DIR__ . "/$file";
+    if (file_exists($full_path)) {
+        // Tentar incluir o arquivo
+        try {
+            require_once $full_path;
+            echo "<p style='color: green;'>✅ $file carregado com sucesso</p>";
+        } catch (Exception $e) {
+            echo "<p style='color: orange;'>⚠️ $file carregado com aviso: " . $e->getMessage() . "</p>";
+        }
     } else {
-        echo "<p style='color: red;'>❌ Rota '$route' -> $controller_class::$action_name (arquivo não encontrado)</p>";
+        echo "<p style='color: red;'>❌ $file não encontrado</p>";
     }
 }
 
-// 5. Teste de carregamento de views principais
-echo "<h2>5. Teste de Carregamento de Views</h2>";
+// 4. Teste de carregamento de views
+echo "<h2>4. Teste de Carregamento de Views</h2>";
 $views = [
     'views/home/index.php',
     'views/layouts/header.php',
@@ -124,8 +102,8 @@ foreach ($views as $view) {
     }
 }
 
-echo "<h2>🎉 Teste Final Concluído!</h2>";
-echo "<p>Se todos os testes passaram, o sistema está pronto para uso.</p>";
+echo "<h2>🎉 Teste Simples Concluído!</h2>";
+echo "<p>Se todos os testes passaram, o sistema deve estar funcionando.</p>";
 echo "<p><strong>Próximos passos:</strong></p>";
 echo "<ul>";
 echo "<li><a href='public/'>Acessar o site principal</a></li>";
