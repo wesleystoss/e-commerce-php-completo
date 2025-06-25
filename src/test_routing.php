@@ -6,6 +6,25 @@ error_reporting(E_ALL);
 
 echo "<h1>Teste de Roteamento</h1>";
 
+// Mapeamento de rotas (igual ao do index.php)
+$routes = [
+    'home' => ['HomeController', 'index'],
+    'products' => ['ProductController', 'index'],
+    'product' => ['ProductController', 'show'],
+    'search' => ['ProductController', 'search'],
+    'category' => ['ProductController', 'category'],
+    'cart' => ['CartController', 'index'],
+    'checkout' => ['CartController', 'checkout'],
+    'login' => ['AuthController', 'login'],
+    'register' => ['AuthController', 'register'],
+    'logout' => ['AuthController', 'logout'],
+    'profile' => ['AuthController', 'profile'],
+    'orders' => ['OrderController', 'index'],
+    'order' => ['OrderController', 'show'],
+    'admin' => ['AdminController', 'index'],
+    'contact' => ['ContactController', 'index']
+];
+
 // Simular diferentes URLs
 $test_urls = [
     '/',
@@ -62,23 +81,28 @@ foreach ($test_urls as $test_url) {
         $param = $path_parts[1];
     }
 
-    // Capitalizar o nome do controller para corresponder aos nomes dos arquivos
-    $controller_capitalized = ucfirst($controller);
-
     echo "<p><strong>Path processado:</strong> $path</p>";
-    echo "<p><strong>Controller (original):</strong> $controller</p>";
-    echo "<p><strong>Controller (capitalizado):</strong> $controller_capitalized</p>";
+    echo "<p><strong>Controller:</strong> $controller</p>";
     echo "<p><strong>Action:</strong> $action</p>";
     if ($param) {
         echo "<p><strong>Param:</strong> $param</p>";
     }
     
-    // Verificar se o arquivo do controlador existe
-    $controller_file = __DIR__ . "/app/controllers/{$controller_capitalized}Controller.php";
-    if (file_exists($controller_file)) {
-        echo "<p style='color: green;'>✅ Arquivo do controlador existe: {$controller_capitalized}Controller.php</p>";
+    // Verificar se a rota existe no mapeamento
+    if (isset($routes[$controller])) {
+        $controller_class = $routes[$controller][0];
+        $action_name = $routes[$controller][1];
+        echo "<p style='color: green;'>✅ Rota mapeada: $controller_class -> $action_name</p>";
+        
+        // Verificar se o arquivo do controlador existe
+        $controller_file = __DIR__ . "/app/controllers/$controller_class.php";
+        if (file_exists($controller_file)) {
+            echo "<p style='color: green;'>✅ Arquivo do controlador existe: $controller_class.php</p>";
+        } else {
+            echo "<p style='color: red;'>❌ Arquivo do controlador não encontrado: $controller_class.php</p>";
+        }
     } else {
-        echo "<p style='color: red;'>❌ Arquivo do controlador não encontrado: {$controller_capitalized}Controller.php</p>";
+        echo "<p style='color: red;'>❌ Rota não encontrada no mapeamento</p>";
     }
     
     echo "<hr>";
