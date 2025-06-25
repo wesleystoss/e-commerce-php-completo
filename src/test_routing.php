@@ -55,19 +55,30 @@ foreach ($test_urls as $test_url) {
     $action = $path_parts[1] ?? 'index';
     $param = $path_parts[2] ?? null;
 
+    // Ajuste para rotas do tipo /category/6, /product/1, /order/2
+    $controllers_with_param = ['category', 'product', 'order'];
+    if (in_array($controller, $controllers_with_param) && isset($path_parts[1]) && is_numeric($path_parts[1])) {
+        $action = 'show'; // Mudar action para 'show' quando há parâmetro numérico
+        $param = $path_parts[1];
+    }
+
+    // Capitalizar o nome do controller para corresponder aos nomes dos arquivos
+    $controller_capitalized = ucfirst($controller);
+
     echo "<p><strong>Path processado:</strong> $path</p>";
-    echo "<p><strong>Controller:</strong> $controller</p>";
+    echo "<p><strong>Controller (original):</strong> $controller</p>";
+    echo "<p><strong>Controller (capitalizado):</strong> $controller_capitalized</p>";
     echo "<p><strong>Action:</strong> $action</p>";
     if ($param) {
         echo "<p><strong>Param:</strong> $param</p>";
     }
     
     // Verificar se o arquivo do controlador existe
-    $controller_file = __DIR__ . "/app/controllers/{$controller}Controller.php";
+    $controller_file = __DIR__ . "/app/controllers/{$controller_capitalized}Controller.php";
     if (file_exists($controller_file)) {
-        echo "<p style='color: green;'>✅ Arquivo do controlador existe: {$controller}Controller.php</p>";
+        echo "<p style='color: green;'>✅ Arquivo do controlador existe: {$controller_capitalized}Controller.php</p>";
     } else {
-        echo "<p style='color: red;'>❌ Arquivo do controlador não encontrado: {$controller}Controller.php</p>";
+        echo "<p style='color: red;'>❌ Arquivo do controlador não encontrado: {$controller_capitalized}Controller.php</p>";
     }
     
     echo "<hr>";

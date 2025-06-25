@@ -111,9 +111,12 @@ $param = $path_parts[2] ?? null;
 // Ajuste para rotas do tipo /category/6, /product/1, /order/2
 $controllers_with_param = ['category', 'product', 'order'];
 if (in_array($controller, $controllers_with_param) && isset($path_parts[1]) && is_numeric($path_parts[1])) {
-    $action = $controller;
+    $action = 'show'; // Mudar action para 'show' quando há parâmetro numérico
     $param = $path_parts[1];
 }
+
+// Capitalizar o nome do controller para corresponder aos nomes dos arquivos
+$controller = ucfirst($controller);
 
 // Mapeamento de rotas com subações
 $routes = [
@@ -153,16 +156,17 @@ if (isset($specific_routes[$full_path])) {
     $controller_class = $route[0];
     $action_name = $route[1];
 } else {
-    // Verificar se a rota existe
-    if (!isset($routes[$controller])) {
+    // Verificar se a rota existe (usar o nome original do controller para o mapeamento)
+    $original_controller = strtolower($controller);
+    if (!isset($routes[$original_controller])) {
         http_response_code(404);
         require_once __DIR__ . '/../views/errors/404.php';
         exit;
     }
 
     // Instanciar controlador
-    $controller_class = $routes[$controller][0];
-    $action_name = $routes[$controller][1];
+    $controller_class = $routes[$original_controller][0];
+    $action_name = $routes[$original_controller][1];
 }
 
 try {
