@@ -51,6 +51,11 @@ function baseUrl($path = '') {
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
     $base = $protocol . '://' . $_SERVER['HTTP_HOST'];
     
+    // Se estiver no subdomínio ecommerce.wesleystoss.com.br, não adicionar subdiretório
+    if ($_SERVER['HTTP_HOST'] === 'ecommerce.wesleystoss.com.br') {
+        return $base . $path;
+    }
+    
     // Adicionar o subdiretório se estiver em um
     $script_name = $_SERVER['SCRIPT_NAME'];
     $subdirectory = dirname($script_name);
@@ -81,11 +86,14 @@ function formatPrice($price) {
 $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 
-// Remover o subdiretório do path se existir
-$script_name = $_SERVER['SCRIPT_NAME'];
-$subdirectory = dirname($script_name);
-if ($subdirectory !== '/') {
-    $path = str_replace($subdirectory, '', $path);
+// Se estiver no subdomínio, não remover subdiretório
+if ($_SERVER['HTTP_HOST'] !== 'ecommerce.wesleystoss.com.br') {
+    // Remover o subdiretório do path se existir
+    $script_name = $_SERVER['SCRIPT_NAME'];
+    $subdirectory = dirname($script_name);
+    if ($subdirectory !== '/') {
+        $path = str_replace($subdirectory, '', $path);
+    }
 }
 
 // Remover base path se necessário
