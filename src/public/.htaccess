@@ -1,5 +1,10 @@
 RewriteEngine On
 
+# Permitir acesso direto à pasta /tests
+RewriteCond %{REQUEST_URI} ^/tests/
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
 # Detectar se está no subdomínio ecommerce.wesleystoss.com.br
 RewriteCond %{HTTP_HOST} ^ecommerce\.wesleystoss\.com\.br$ [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
