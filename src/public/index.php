@@ -5,8 +5,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 // Carregar variáveis de ambiente
 $envFile = __DIR__ . '/../.env';
 if (file_exists($envFile)) {
@@ -83,20 +81,12 @@ function formatPrice($price) {
 $request_uri = $_SERVER['REQUEST_URI'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 
-// Debug temporário
-error_log("REQUEST_URI: " . $request_uri);
-error_log("PATH inicial: " . $path);
-
 // Remover o subdiretório do path se existir
 $script_name = $_SERVER['SCRIPT_NAME'];
 $subdirectory = dirname($script_name);
 if ($subdirectory !== '/') {
     $path = str_replace($subdirectory, '', $path);
 }
-
-error_log("SCRIPT_NAME: " . $script_name);
-error_log("SUBDIRECTORY: " . $subdirectory);
-error_log("PATH após remoção subdir: " . $path);
 
 // Remover base path se necessário
 $base_path = '/';
@@ -111,8 +101,6 @@ $path = rtrim($path, '/');
 if (empty($path)) {
     $path = 'home';
 }
-
-error_log("PATH final: " . $path);
 
 // Dividir path em partes
 $path_parts = explode('/', $path);
@@ -162,7 +150,7 @@ $specific_routes = [
 $full_path = $controller . ($action !== 'index' ? '/' . $action : '');
 if (isset($specific_routes[$full_path])) {
     $route = $specific_routes[$full_path];
-    $controller_class = 'App\\Controllers\\' . $route[0];
+    $controller_class = $route[0];
     $action_name = $route[1];
 } else {
     // Verificar se a rota existe
@@ -173,7 +161,7 @@ if (isset($specific_routes[$full_path])) {
     }
 
     // Instanciar controlador
-    $controller_class = 'App\\Controllers\\' . $routes[$controller][0];
+    $controller_class = $routes[$controller][0];
     $action_name = $routes[$controller][1];
 }
 
