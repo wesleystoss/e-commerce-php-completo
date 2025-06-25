@@ -1,25 +1,19 @@
 RewriteEngine On
 
-# Permitir acesso direto à pasta /tests
-RewriteCond %{REQUEST_URI} ^/tests/
-RewriteCond %{REQUEST_FILENAME} -f
+# Permitir acesso direto a qualquer arquivo ou pasta física (inclusive /tests, /assets, etc)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
 # Detectar se está no subdomínio ecommerce.wesleystoss.com.br
 RewriteCond %{HTTP_HOST} ^ecommerce\.wesleystoss\.com\.br$ [NC]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 
 # Para subdiretório (portfolio/ecommerce/src/public)
 RewriteCond %{HTTP_HOST} ^wesleystoss\.com\.br$ [NC]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 
 # Fallback para qualquer outro caso
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 
 # Configurações de segurança
